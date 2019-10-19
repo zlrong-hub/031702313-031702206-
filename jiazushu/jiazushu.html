@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>家族树</title>
+    <style type="text/css">
+     body
+     {
+	background-image:url(背景1.jpg);
+	background-repeat:no-repeat;
+	background-size:cover
+      }
+     .main
+     {
+	width:60%;
+	height:400px;
+	float:right;
+      }
+      </style>
+</head>
+<body>
+<h2 align="center"><font color=black>家族树信息</font></h2>
+请输入家族树信息
+<br>
+<textarea id="Text"cols ="50" rows = "20" style="background-color:transparent"></textarea>
+<div id="div" class ="main">
+</div>
+<br>
+<br>
+<button onclick="maketree()" style="margin-left:140px;">maketree</button>
+
+
+
+<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
+</script>
+<script>
+    //动态生成内嵌无序列表
+    function rendertree(lines,parent){
+        if(lines.length<=1||lines[1].length<=1){
+            var el=$('<a href="#">'+lines+'</a>');
+            parent.append(el);
+            return parent;
+        }
+        else{
+            el=$('<a href="#">'+lines[0]+'</a>');
+            parent.append(el);}
+        var ul=$('<ul/>');
+        for(var i=1;i<lines.length;i++){
+            var li=$('<li/>');
+            rendertree(lines[i],li);
+            ul.append(li);
+        }
+        parent.append(ul);
+        return parent;
+    }
+    //在divz中添加生成的无序列表
+    function render(lines){
+        var div=$('<div/>');
+        return rendertree(lines,div);
+    }
+    function maketree(){
+        //将文本框内容进行分割后存放在数组中
+        var text=0;var lines=new Array();var data=new Array();var tdata=new Array();var line=new Array();var k=0;var j=0;
+        text=document.getElementById("Text").value;
+        lines=text.split("\n");
+        for(var i=0;i<lines.length;i++){
+            lines[i]=lines[i].replace(/(：)/g," ");
+            lines[i]=lines[i].replace(/(、)/g," ");
+            lines[i]=lines[i].split(" ");
+        }
+        /*for(var i=0;i<lines.length;i++){
+            if(lines[i]!=""){
+                data[j]=lines[i];j++;
+            }
+            else{
+                tdata[k]=data;k++;j=0;var data=new Array();
+            }
+        }*/
+        //for(var j=0;j<tadata.length;j++) {
+            var tree=render(lines);
+            $("div").append(tree);
+        //}
+        $("a").click(function () {
+            $(this).next().toggle();
+        });
+    }
+</script>
+
+</body>
+</html>
